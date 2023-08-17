@@ -57,6 +57,7 @@ class ERA(torch.nn.Module):
         # input_shape[-1]: num_channels
         assert len(input_shape) in [2, 3, 4, 5]
 
+        self.normalise = False
         # Normalisation
         if (standardization_axes is not None) or (learnable_axes is not None):
             self.normalise = True
@@ -84,8 +85,8 @@ class ERA(torch.nn.Module):
         if initialisation != 'random':
             numerator = torch.repeat_interleave(numerator, weight_shape_ending[-1], dim=-1)
             denominator = torch.repeat_interleave(denominator, weight_shape_ending[-1], dim=-1)
-            numerator = torch.reshape(numerator, self.numerator_weight_shape)
-            denominator = torch.reshape(denominator, self.denominator_weight_shape)
+            numerator = torch.reshape(numerator, numerator_weight_shape)
+            denominator = torch.reshape(denominator, denominator_weight_shape)
 
         # Adding trainable weight vectors for numerator and denominator
         if initialisation == 'random':
